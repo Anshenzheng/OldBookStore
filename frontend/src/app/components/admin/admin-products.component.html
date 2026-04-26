@@ -1,0 +1,85 @@
+<div>
+  <h3 class="mb-4">商品管理</h3>
+
+  <div *ngIf="loading" class="spinner-container">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && products.length === 0" class="empty-state">
+    <div class="empty-state-icon">📦</div>
+    <p class="empty-state-text">暂无商品数据</p>
+  </div>
+
+  <div *ngIf="!loading && products.length > 0">
+    <div class="card">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th style="width: 80px;">商品</th>
+              <th>标题</th>
+              <th>卖家</th>
+              <th style="width: 100px;">价格</th>
+              <th style="width: 100px;">审核状态</th>
+              <th style="width: 100px;">商品状态</th>
+              <th style="width: 80px;">浏览</th>
+              <th style="width: 100px;">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of products">
+              <td>
+                <img [src]="getProductImage(product)" 
+                     class="rounded" style="width: 60px; height: 45px; object-fit: cover;"
+                     alt="{{ product.title }}">
+              </td>
+              <td>
+                <div class="fw-semibold">{{ product.title }}</div>
+                <small class="text-muted">{{ product.categoryName || '未分类' }}</small>
+              </td>
+              <td>{{ product.sellerNickname }}</td>
+              <td class="text-danger fw-semibold">¥{{ product.price | number:'1.2-2' }}</td>
+              <td>
+                <span class="badge {{ getAuditStatusClass(product.auditStatus) }}">
+                  {{ getAuditStatusText(product.auditStatus) }}
+                </span>
+              </td>
+              <td>
+                <span class="{{ getProductStatusClass(product.status) }}">
+                  {{ getProductStatusText(product.status) }}
+                </span>
+              </td>
+              <td>{{ product.viewCount || 0 }}</td>
+              <td>
+                <button *ngIf="product.status === 'ON_SALE'" 
+                        class="btn btn-sm btn-outline-secondary" 
+                        (click)="takeOffShelf(product)">
+                  下架
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div *ngIf="totalPages > 1" class="pagination-container">
+      <nav>
+        <ul class="pagination">
+          <li class="page-item" [class.disabled]="currentPage === 0">
+            <a class="page-link" (click)="currentPage > 0 && goToPage(currentPage - 1)">上一页</a>
+          </li>
+          <li class="page-item" *ngFor="let page of pages"
+              [class.active]="page === currentPage">
+            <a class="page-link" (click)="goToPage(page)">{{ page + 1 }}</a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
+            <a class="page-link" (click)="currentPage < totalPages - 1 && goToPage(currentPage + 1)">下一页</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>

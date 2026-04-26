@@ -1,0 +1,52 @@
+<nav class="navbar navbar-expand-lg navbar-dark mb-4">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">📚 校园二手书交易平台</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">首页</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/products" routerLinkActive="active">商品列表</a>
+        </li>
+        <li *ngIf="authService.isStudent()" class="nav-item">
+          <a class="nav-link" routerLink="/products/create" routerLinkActive="active">发布闲置</a>
+        </li>
+        <li *ngIf="authService.isStudent()" class="nav-item">
+          <a class="nav-link" routerLink="/products/my" routerLinkActive="active">我的商品</a>
+        </li>
+        <li *ngIf="authService.isAdmin()" class="nav-item">
+          <a class="nav-link" routerLink="/admin" routerLinkActive="active">管理后台</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li *ngIf="!authService.isLoggedIn()" class="nav-item">
+          <a class="nav-link" routerLink="/login">登录</a>
+        </li>
+        <li *ngIf="!authService.isLoggedIn()" class="nav-item">
+          <a class="nav-link" routerLink="/register">注册</a>
+        </li>
+        <li *ngIf="authService.isLoggedIn()" class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+            你好, {{ authService.currentUserValue?.nickname }}
+            <span *ngIf="authService.isAdmin()" class="badge bg-warning ms-2">管理员</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" (click)="logout()">退出登录</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>
+
+<footer class="footer mt-auto">
+  <div class="container text-center">
+    <p class="mb-0">© 2026 校园二手书交易平台 | 让闲置物品流动起来</p>
+  </div>
+</footer>

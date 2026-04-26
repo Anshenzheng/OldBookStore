@@ -1,0 +1,150 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3 col-lg-2 px-0">
+      <div class="admin-sidebar">
+        <div class="text-center mb-4 px-3">
+          <h5 class="text-white mb-0">📊 管理后台</h5>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" 
+               [class.active]="activeTab === 'overview'"
+               (click)="activeTab = 'overview'">
+              📈 数据概览
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" 
+               [class.active]="activeTab === 'audit'"
+               (click)="activeTab = 'audit'">
+              ✅ 商品审核
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" 
+               [class.active]="activeTab === 'products'"
+               (click)="activeTab = 'products'">
+              📦 商品管理
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" 
+               [class.active]="activeTab === 'users'"
+               (click)="activeTab = 'users'">
+              👥 用户管理
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" 
+               [class.active]="activeTab === 'export'"
+               (click)="activeTab = 'export'">
+              📥 数据导出
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-md-9 col-lg-10 py-4">
+      
+      <div *ngIf="activeTab === 'overview'">
+        <h3 class="mb-4">数据概览</h3>
+        
+        <div *ngIf="loading" class="spinner-container">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+
+        <div *ngIf="!loading" class="row g-4 mb-5">
+          <div class="col-6 col-md-3">
+            <div class="stat-card primary">
+              <div class="stat-number">{{ statistics.totalUsers || 0 }}</div>
+              <div class="stat-label">总用户数</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-card secondary">
+              <div class="stat-number">{{ statistics.totalProducts || 0 }}</div>
+              <div class="stat-label">总商品数</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-card info">
+              <div class="stat-number">{{ statistics.pendingProducts || 0 }}</div>
+              <div class="stat-label">待审核商品</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-card danger">
+              <div class="stat-number">{{ statistics.soldProducts || 0 }}</div>
+              <div class="stat-label">已售出商品</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">平台数据</h5>
+            <div class="row">
+              <div class="col-md-4">
+                <p class="mb-2"><strong>已审核通过商品:</strong> {{ statistics.approvedProducts || 0 }}</p>
+              </div>
+              <div class="col-md-4">
+                <p class="mb-2"><strong>待处理举报:</strong> {{ statistics.pendingReports || 0 }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="activeTab === 'audit'">
+        <app-admin-audit></app-admin-audit>
+      </div>
+
+      <div *ngIf="activeTab === 'products'">
+        <app-admin-products></app-admin-products>
+      </div>
+
+      <div *ngIf="activeTab === 'users'">
+        <app-admin-users></app-admin-users>
+      </div>
+
+      <div *ngIf="activeTab === 'export'">
+        <h3 class="mb-4">数据导出</h3>
+        
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="card bg-light">
+                  <div class="card-body text-center">
+                    <div class="display-4 mb-3">📦</div>
+                    <h5 class="mb-3">商品数据导出</h5>
+                    <p class="text-muted mb-3">导出所有商品信息到Excel文件</p>
+                    <button class="btn btn-primary" (click)="exportProducts()">
+                      导出商品数据
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="card bg-light">
+                  <div class="card-body text-center">
+                    <div class="display-4 mb-3">👥</div>
+                    <h5 class="mb-3">用户数据导出</h5>
+                    <p class="text-muted mb-3">导出所有用户信息到Excel文件</p>
+                    <button class="btn btn-primary" (click)="exportUsers()">
+                      导出用户数据
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
