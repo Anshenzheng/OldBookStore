@@ -80,7 +80,7 @@ export class RegisterComponent implements OnInit {
           }, 2000);
           this.loading = false;
         },
-        error: error => {
+        error: (error: any) => {
           this.error = error.error?.message || '注册失败，请重试';
           this.loading = false;
         }
