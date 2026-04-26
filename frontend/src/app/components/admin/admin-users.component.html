@@ -1,0 +1,93 @@
+<div>
+  <h3 class="mb-4">用户管理</h3>
+
+  <div *ngIf="loading" class="spinner-container">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && users.length === 0" class="empty-state">
+    <div class="empty-state-icon">👥</div>
+    <p class="empty-state-text">暂无用户数据</p>
+  </div>
+
+  <div *ngIf="!loading && users.length > 0">
+    <div class="card">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th style="width: 60px;">头像</th>
+              <th>用户名</th>
+              <th>昵称</th>
+              <th>邮箱</th>
+              <th>角色</th>
+              <th>状态</th>
+              <th style="width: 150px;">注册时间</th>
+              <th style="width: 120px;">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>
+                <img [src]="getUserAvatar(user)" 
+                     class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;"
+                     alt="{{ user.nickname }}">
+              </td>
+              <td class="fw-semibold">{{ user.username }}</td>
+              <td>{{ user.nickname }}</td>
+              <td>{{ user.email || '-' }}</td>
+              <td>
+                <span class="{{ getRoleClass(user.role) }}">
+                  {{ getRoleText(user.role) }}
+                </span>
+              </td>
+              <td>
+                <span class="{{ getStatusClass(user.status) }}">
+                  {{ getStatusText(user.status) }}
+                </span>
+              </td>
+              <td>
+                <small class="text-muted">
+                  {{ user.createdAt | date:'yyyy-MM-dd HH:mm' }}
+                </small>
+              </td>
+              <td>
+                <ng-container *ngIf="user.role !== 'ADMIN'">
+                  <button *ngIf="user.status === 'ACTIVE'" 
+                          class="btn btn-sm btn-outline-danger" 
+                          (click)="banUser(user)">
+                    禁用
+                  </button>
+                  <button *ngIf="user.status === 'BANNED'" 
+                          class="btn btn-sm btn-outline-success" 
+                          (click)="unbanUser(user)">
+                    解禁
+                  </button>
+                </ng-container>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div *ngIf="totalPages > 1" class="pagination-container">
+      <nav>
+        <ul class="pagination">
+          <li class="page-item" [class.disabled]="currentPage === 0">
+            <a class="page-link" (click)="currentPage > 0 && goToPage(currentPage - 1)">上一页</a>
+          </li>
+          <li class="page-item" *ngFor="let page of pages"
+              [class.active]="page === currentPage">
+            <a class="page-link" (click)="goToPage(page)">{{ page + 1 }}</a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
+            <a class="page-link" (click)="currentPage < totalPages - 1 && goToPage(currentPage + 1)">下一页</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>

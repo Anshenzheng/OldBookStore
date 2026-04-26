@@ -1,0 +1,53 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow">
+        <div class="card-body p-5">
+          <h2 class="text-center mb-4">欢迎回来</h2>
+          <p class="text-center text-muted mb-4">登录您的账户</p>
+          
+          <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+          
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label class="form-label">用户名</label>
+              <input type="text" formControlName="username" class="form-control"
+                     [ngClass]="{ 'is-invalid': submitted && f['username'].errors }">
+              <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
+                请输入用户名
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">密码</label>
+              <input type="password" formControlName="password" class="form-control"
+                     [ngClass]="{ 'is-invalid': submitted && f['password'].errors }">
+              <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                请输入密码
+              </div>
+            </div>
+            
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary btn-lg" [disabled]="loading">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                登录
+              </button>
+            </div>
+          </form>
+          
+          <div class="text-center mt-4">
+            <p>还没有账户？<a routerLink="/register" class="text-primary">立即注册</a></p>
+          </div>
+          
+          <div class="card mt-4 bg-light">
+            <div class="card-body">
+              <p class="mb-2"><strong>测试账户：</strong></p>
+              <p class="mb-0 text-muted">管理员: admin / admin123</p>
+              <p class="mb-0 text-muted">学生: 注册新账户即可</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

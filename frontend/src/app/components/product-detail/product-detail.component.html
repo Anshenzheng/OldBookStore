@@ -1,0 +1,117 @@
+<div class="container mt-4">
+  <button class="btn btn-outline-secondary mb-4" (click)="goBack()">
+    ← 返回列表
+  </button>
+
+  <div *ngIf="loading" class="spinner-container">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error && product" class="card">
+    <div class="card-body p-0">
+      <div class="row g-0">
+        <div class="col-md-6">
+          <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active" *ngFor="let img of getProductImages(); let i = index">
+                <img [src]="img" class="d-block w-100" alt="Product image" style="height: 500px; object-fit: cover;">
+              </div>
+            </div>
+            <button *ngIf="getProductImages().length > 1" class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button *ngIf="getProductImages().length > 1" class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon"></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="col-md-6 p-5">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h2 class="mb-0">{{ product.title }}</h2>
+            <span class="badge {{ getAuditStatusClass() }}">{{ getAuditStatusText() }}</span>
+          </div>
+
+          <p class="product-price display-5 mb-4">¥{{ product.price | number:'1.2-2' }}</p>
+
+          <div class="mb-4">
+            <h5>商品描述</h5>
+            <p class="text-muted">{{ product.description || '暂无描述' }}</p>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-6">
+              <small class="text-muted">分类</small>
+              <p class="mb-0 fw-semibold">{{ product.categoryName || '未分类' }}</p>
+            </div>
+            <div class="col-6">
+              <small class="text-muted">浏览量</small>
+              <p class="mb-0 fw-semibold">{{ product.viewCount || 0 }}</p>
+            </div>
+          </div>
+
+          <div class="card bg-light mb-4">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <div class="me-3">
+                  <img [src]="product.sellerAvatar || 'https://picsum.photos/50/50'" 
+                       class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                </div>
+                <div>
+                  <p class="mb-0 fw-semibold">{{ product.sellerNickname }}</p>
+                  <small class="text-muted">卖家</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="!isOwner()" class="d-grid gap-2">
+            <button class="btn btn-primary btn-lg" (click)="contactSeller()">
+              💬 联系卖家
+            </button>
+          </div>
+
+          <div *ngIf="isOwner()" class="d-grid gap-2">
+            <button class="btn btn-outline-primary" (click)="editProduct()">
+              ✏️ 编辑商品
+            </button>
+            <div *ngIf="product.rejectReason" class="alert alert-danger mt-3">
+              <strong>审核拒绝原因：</strong>{{ product.rejectReason }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showContactModal" class="modal d-block" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">联系卖家</h5>
+        <button type="button" class="btn-close" (click)="showContactModal = false"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="product.contactInfo" class="mb-3">
+          <p class="text-muted mb-1">卖家联系方式：</p>
+          <p class="fs-5 fw-semibold">{{ product.contactInfo }}</p>
+        </div>
+        <div *ngIf="!product.contactInfo" class="text-center py-4">
+          <div class="empty-state-icon mb-3">💬</div>
+          <p class="text-muted">卖家暂未提供联系方式</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="showContactModal = false">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="showContactModal" class="modal-backdrop fade show"></div>
