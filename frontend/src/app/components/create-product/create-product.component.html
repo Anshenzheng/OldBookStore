@@ -74,7 +74,7 @@
                 <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
                 {{ isEditMode ? '保存修改' : '发布商品' }}
               </button>
-              <button type="button" class="btn btn-outline-secondary" (click)="router.navigate(['/products/my'])">
+              <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
                 取消
               </button>
             </div>

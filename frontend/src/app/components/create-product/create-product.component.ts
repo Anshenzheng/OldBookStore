@@ -106,7 +106,7 @@ export class CreateProductComponent implements OnInit {
               this.router.navigate(['/products/my']);
             }, 1500);
           },
-          error: (error) => {
+          error: (error: any) => {
             this.error = error.error?.message || '更新失败，请重试';
             this.loading = false;
           }
@@ -121,11 +121,15 @@ export class CreateProductComponent implements OnInit {
               this.router.navigate(['/products/my']);
             }, 2000);
           },
-          error: (error) => {
+          error: (error: any) => {
             this.error = error.error?.message || '发布失败，请重试';
             this.loading = false;
           }
         });
     }
+  }
+
+  cancel(): void {
+    this.router.navigate(['/products/my']);
   }
 }

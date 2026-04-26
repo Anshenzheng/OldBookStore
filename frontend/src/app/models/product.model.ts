@@ -1,20 +1,20 @@
 export interface Product {
   id: number;
   title: string;
-  description: string;
+  description?: string;
   price: number;
-  images: string;
-  categoryId: number;
-  categoryName: string;
+  images?: string;
+  categoryId?: number;
+  categoryName?: string;
   sellerId: number;
-  sellerNickname: string;
-  sellerAvatar: string;
+  sellerNickname?: string;
+  sellerAvatar?: string;
   status: string;
   auditStatus: string;
-  rejectReason: string;
+  rejectReason?: string;
   createdAt: Date;
-  viewCount: number;
-  contactInfo: string;
+  viewCount?: number;
+  contactInfo?: string;
 }
 
 export interface CreateProductRequest {
