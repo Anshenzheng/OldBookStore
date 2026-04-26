@@ -35,7 +35,7 @@
               </td>
               <td>
                 <div class="fw-semibold">{{ product.title }}</div>
-                <small class="text-muted">{{ product.description | slice:0:50 }}{{ product.description?.length > 50 ? '...' : '' }}</small>
+                <small class="text-muted">{{ product.description || '' | slice:0:50 }}{{ (product.description || '').length > 50 ? '...' : '' }}</small>
               </td>
               <td>{{ product.sellerNickname }}</td>
               <td class="text-danger fw-semibold">¥{{ product.price | number:'1.2-2' }}</td>

@@ -2,13 +2,13 @@ export interface User {
   id: number;
   username: string;
   nickname: string;
-  email: string;
-  phone: string;
-  avatar: string;
+  email?: string;
+  phone?: string;
+  avatar?: string;
   role: string;
   status: string;
   createdAt: Date;
-  lastLoginAt: Date;
+  lastLoginAt?: Date;
 }
 
 export interface LoginRequest {
